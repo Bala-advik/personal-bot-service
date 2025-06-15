@@ -5,11 +5,17 @@
   "scripts": {
     "start": "node index.js"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google/genai": "^1.0.1",
+    "@langchain/core": "^0.3.57",
+    "@langchain/google-genai": "^0.2.9",
+    "express-rate-limit": "^7.5.0",
+    "nodemon": "^3.1.10",
     "axios": "^1.9.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
