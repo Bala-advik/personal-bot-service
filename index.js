@@ -1,27 +1,39 @@
+const express = require("express");
 const TelegramBot = require("node-telegram-bot-api");
-const axios = require("axios");
-
 require("dotenv").config();
 
-const TOKEN = process.env.TL_TOKEN;
-// Telegram chat ID (optional, set dynamically or hardcode)
-let chatId = null;
+const app = express();
+const port = process.env.PORT || 3000;
+const token = process.env.TL_TOKEN;
 
-// Initialize the bot
-const bot = new TelegramBot(TOKEN, { polling: true });
+// Initialize Telegram Bot with polling
+const bot = new TelegramBot(token, { polling: true });
 
-// Handle /start command
+// Bot command: /start
 bot.onText(/\/start/, (msg) => {
-  chatId = msg.chat.id;
+  const chatId = msg.chat.id;
   bot.sendMessage(
     chatId,
-    "Welcome! I will send you daily gold prices at 9:00 AM."
+    "Welcome to MyExpressBot! Send any message, and I’ll echo it back."
   );
 });
 
-// Handle errors
-bot.on("polling_error", (error) => {
-  console.error("Polling error:", error.message);
+// Echo any text message
+bot.on("message", (msg) => {
+  const chatId = msg.chat.id;
+  const text = msg.text;
+  if (!text.startsWith("/")) {
+    // Ignore commands
+    bot.sendMessage(chatId, `You said: ${text}`);
+  }
 });
 
-console.log("Bot is running...");
+// Optional: Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).send("Bot is running!");
+});
+
+// Start Express server
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
