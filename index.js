@@ -1,13 +1,13 @@
 import express from "express";
+import { TL_TOKEN, PORT, API_KEY } from "./config/env.js";
 import TelegramBot from "node-telegram-bot-api";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
-require("dotenv").config();
 
 const app = express();
-const port = process.env.PORT || 3000;
-const token = process.env.TL_TOKEN;
+const port = PORT || 3000;
+const token = TL_TOKEN;
 
 // Initialize Telegram Bot with polling
 const bot = new TelegramBot(token, { polling: true });
@@ -26,7 +26,7 @@ bot.on("message", async (msg) => {
     try {
       const question = msg.text;
       const modelConfig = {
-        apiKey: process.env.API_KEY,
+        apiKey: API_KEY,
         model: "gemma-3-4b-it",
       };
 
